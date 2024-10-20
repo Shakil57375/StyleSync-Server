@@ -1,6 +1,6 @@
 import validator from "validator";
 import userModel from "../models/userModel";
-
+import bcrypt from "bcrypt"
 // route for user login
 const loginUser = async (req, res) => {};
 // route for user registration
@@ -36,8 +36,14 @@ const registerUser = async (req, res) => {
         });
     }
 
+    // hash password
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+
     // create new user
-    const newUser = new userModel({ name, email, password });
+    const newUser = new userModel({ name, email, password : hashedPassword});
     const savedUser = await newUser.save();
 
     res
