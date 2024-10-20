@@ -4,7 +4,7 @@ const loginUser = async (req, res) => {
 };
 // route for user registration
 const registerUser = async (req, res) => {
-
+ res.json({msg : "Registration api working"})
 };
 
 // route for admin login
