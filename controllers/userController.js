@@ -1,6 +1,15 @@
 import validator from "validator";
 import userModel from "../models/userModel";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";
+
+// create token
+const createToken = (id) =>{
+    const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    return token;
+}
+
+
 // route for user login
 const loginUser = async (req, res) => {};
 // route for user registration
@@ -46,12 +55,16 @@ const registerUser = async (req, res) => {
     const newUser = new userModel({ name, email, password : hashedPassword});
     const savedUser = await newUser.save();
 
-    const token = 
+    const token = createToken(user._id)
+    res.json({success: true, token})
 
     res
       .status(201)
       .json({ message: "User registered successfully", user: savedUser });
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 // route for admin login
