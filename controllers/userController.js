@@ -12,7 +12,6 @@ const createToken = (id) => {
 // route for user login
 const loginUser = async (req, res) => {};
 // route for user registration
-
 const registerUser = async (req, res) => {
     try {
       const { name, email, password } = req.body;
@@ -33,7 +32,7 @@ const registerUser = async (req, res) => {
       }
   
       const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#+\-_=<>?])[A-Za-z\d@$!%*?&#+\-_=<>?]{8,}$/;
       if (!passwordRegex.test(password)) {
         return res.status(400).json({
           success: false,
@@ -50,10 +49,7 @@ const registerUser = async (req, res) => {
       const newUser = new userModel({ name, email, password: hashedPassword });
       const savedUser = await newUser.save();
   
-      // create token from saved user's id
       const token = createToken(savedUser._id);
-  
-      // Send the response with token
       return res
         .status(201)
         .json({ success: true, token, message: "User registered successfully" });
@@ -62,6 +58,7 @@ const registerUser = async (req, res) => {
       res.status(500).json({ success: false, message: "Server error" });
     }
   };
+  
   
 
 // route for admin login
