@@ -46,6 +46,8 @@ const registerUser = async (req, res) => {
     const newUser = new userModel({ name, email, password : hashedPassword});
     const savedUser = await newUser.save();
 
+    const token = 
+
     res
       .status(201)
       .json({ message: "User registered successfully", user: savedUser });
