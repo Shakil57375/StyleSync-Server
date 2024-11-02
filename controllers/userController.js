@@ -32,7 +32,7 @@ const loginUser = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-// route for user registration
+// route for user registrations
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
