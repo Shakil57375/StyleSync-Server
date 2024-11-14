@@ -1,18 +1,30 @@
-import multer from "multer";
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Configure Multer storage options
+// This is the ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const storage = multer.diskStorage({
-  // Define the folder where the uploaded files will be stored
-  destination: function (req, file, callback) {
-    callback(null, 'uploads/'); // Make sure the 'uploads/' folder exists
-  },
-  // Define the file name format for uploaded files
-  filename: function (req, file, callback) {
-    callback(null, Date.now() + '-' + file.originalname); // Create a unique name using the timestamp
-  },
+    destination: function (req, file, callback) {
+        // Define the upload folder path
+        const uploadPath = path.join(__dirname, '../uploads/');
+
+        // Check if the folder exists, if not, create it
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        callback(null, uploadPath); // Use the folder path for storing uploads
+    },
+    filename: function (req, file, callback) {
+        // Create a unique filename with timestamp
+        callback(null, Date.now() + '-' + file.originalname);
+    },
 });
 
-// Set up multer middleware with the storage configuration
 const upload = multer({ storage });
 
 // Export the upload middleware for use in routes

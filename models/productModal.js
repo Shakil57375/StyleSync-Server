@@ -33,9 +33,9 @@ const productSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  bestseller: { type: "boolean" },
-  latestProduct: { type: "boolean" },
-  date: { type: Number, required: true }, 
+  bestseller: { type: Boolean },  // Corrected
+  latestProduct: { type: Boolean },  // Corrected
+  date: { type: Date, default: Date.now },  // Corrected
 });
 
 const productModal = mongoose.models.product || mongoose.model("product", productSchema);
