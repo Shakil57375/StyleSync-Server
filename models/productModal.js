@@ -17,10 +17,6 @@ const productSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
   category: {
     type: String,
     required: true,
@@ -33,10 +29,11 @@ const productSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  bestseller: { type: Boolean },  // Corrected
-  latestProduct: { type: Boolean },  // Corrected
-  date: { type: Date, default: Date.now },  // Corrected
+  bestseller: { type: Boolean }, // Corrected
+  latestProduct: { type: Boolean }, // Corrected
+  date: { type: Number, required: true }, // Corrected
 });
 
-const productModal = mongoose.models.product || mongoose.model("product", productSchema);
+const productModal =
+  mongoose.models.product || mongoose.model("product", productSchema);
 export default productModal;
