@@ -49,7 +49,7 @@ const addProduct = async (req, res) => {
 
     const product = new productModal(productData);
     await product.save();
-    res.json({ success: true, message : "Product Added" });
+    res.json({ success: true, message: "Product Added" });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -59,22 +59,38 @@ const addProduct = async (req, res) => {
 // function for list products
 
 const listProducts = async (req, res) => {
-    try {
-      const products = await productModal.find({});
-      res.json({ success: true, products });
-    } catch (error) {
-      console.log(error);
-      res.json({ success: false, message: error.message });
-    }
-  
+  try {
+    const products = await productModal.find({});
+    res.json({ success: true, products });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
 };
 
 // function for remove product
 
-const removeProduct = async (req, res) => {};
+const removeProduct = async (req, res) => {
+  try {
+    await productModal.findByIdAndDelete(req.body.id);
+    res.json({ success: true, message: "Product removed successfully " });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // function for single product info
 
-const singleProduct = async (req, res) => {};
+const singleProduct = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const product = await productModal.findById(productId);
+    res.json({ success: true, product });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 export { addProduct, removeProduct, listProducts, singleProduct };
