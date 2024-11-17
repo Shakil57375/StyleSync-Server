@@ -3,26 +3,25 @@ import { v2 as cloudinary } from "cloudinary";
 import productModal from "../models/productModal.js";
 const addProduct = async (req, res) => {
   try {
-    console.log(req.files); // Add this line
+
     const {
       name,
       description,
       price,
-      category,
+      category,  // Make sure this is being sent and logged
       subCategory,
       sizes,
       bestseller,
       latestProduct,
     } = req.body;
 
-    // Access the files
+    // Handle file uploads (as you already have)
     const image1 = req.files.image1 ? req.files.image1[0] : null;
     const image2 = req.files.image2 ? req.files.image2[0] : null;
     const image3 = req.files.image3 ? req.files.image3[0] : null;
     const image4 = req.files.image4 ? req.files.image4[0] : null;
-    const images = [image1, image2, image3, image4].filter(
-      (item) => item !== null
-    );
+    const images = [image1, image2, image3, image4].filter((item) => item !== null);
+
     const imagesUrl = await Promise.all(
       images.map(async (image) => {
         let result = await cloudinary.uploader.upload(image.path, {
@@ -44,9 +43,7 @@ const addProduct = async (req, res) => {
       images: imagesUrl,
       date: Date.now(),
     };
-
-    console.log(productData);
-
+    console.log(productData)
     const product = new productModal(productData);
     await product.save();
     res.json({ success: true, message: "Product Added" });
@@ -55,6 +52,7 @@ const addProduct = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
 
 // function for list products
 
